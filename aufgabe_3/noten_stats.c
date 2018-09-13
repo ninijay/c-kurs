@@ -46,11 +46,20 @@ void getStatistics(void){
 		cnt++;
 	}
 	// get worst
-	for(int i = 0; noten[i] != 0 ; i++)
-		worst = i+1;
+	int i = 0;
+	while(worst==0)
+	{
+		if(noten[i])
+			worst = (i+1);
+		i++;
+	}	
 	// get best
-	for(int i = 5; noten[i] !=0; i--)
-		best = i+1;	
+	i = 5;
+	while(best==0){
+		if(noten[i])
+			best = (i+1);
+		i--;
+	}
 	// get avg
 	int tmp=0;
 	for(int i = 0; i < 6; i++)
@@ -64,7 +73,7 @@ void getStatistics(void){
 	(void)printf("Statistics (%d students, %d points needed for mark 6)\n\n", cnt, needFor6);
 	for(int i = 5; i > -1; i--)
 		(void)printf("Mark %d: %d\n", (i+1), noten[i]);
-	(void)printf("\nBest mark:\t%d\nWorst mark:\t%d\nAverage mark:\t%.2f\nMark >=4\t%d students (%.2f %%)\n", best, worst, avg, cntOver4, over4inPerc);
+	(void)printf("\nBest mark:\t%d\nWorst mark:\t%d\nAverage mark:\t%.2f\nMark >=4:\t%d students (%.2f %%)\n", best, worst, avg, cntOver4, over4inPerc);
 	(void)printLn();
 }
 
