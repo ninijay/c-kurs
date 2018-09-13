@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define FIRST_YEAR 1583
 // preparation with month names, days in months and bools
 enum {Jan=1, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec};
 static char daytab[2][13] = {
@@ -14,26 +15,37 @@ typedef struct {
 } Date;
 
 Date* getNextDay(Date *today);
+bool isDateValid(Date *dt);
+
 void printDate(Date *dt){
 	(void)printf("%d-%d-%d", dt->day, dt->month, dt->year);
 }
 int main(int argc, char *argv[]){
-	if (argc < 3 || argc > 4)
+	if (argc < 3 || argc > 4){
+		(void)printf("Not enough args\n");
+		(void)printf("Usage:\n\tnext_day <day> <month> <year>\nExample:\n\tnext_day 12 12 2003\n");
 		return EXIT_FAILURE;
+	}
 	Date *today;
         today = malloc(sizeof(Date));
-	if(today == NULL)
+	if(today == NULL){
+		(void)printf("Error during memmory allocation\n");
 		return EXIT_FAILURE;
+	}
 	today->day = strtol(argv[1], NULL, 10);
 	today->month = strtol(argv[2], NULL, 10);
 	today->year = strtol(argv[3], NULL, 10);
+	if(!isDateValid(today)){
+		(void)printf("Date is invalid!\n");
+		return EXIT_FAILURE;
+	}
 	(void)printf("Your Date: ");
 	(void)printDate(today);
 	(void)printf("\n");
 	(void)printf("The next day: ");
 	(void)printDate(getNextDay(today));	
 	(void)printf("\n");
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 
@@ -56,7 +68,7 @@ Date* getNextDay(Date *today){
 	}
 	
 	// check if next year
-	if(nextMonth > 12){
+	if(nextMonth > Dec){
 		nextMonth = 1;
 		nextYear++;
 	}
@@ -70,4 +82,16 @@ Date* getNextDay(Date *today){
 
 bool isLeap(int year){
 	return ((year%4 == 0 && year%100 != 0) || year%400 == 0);
+}
+
+bool isDateValid(Date *dt){
+	if(dt->year<FIRST_YEAR)
+		return true;
+	if(dt->month < Jan || dt->month > Dec)
+		return false;
+	
+	bool leap = isLeap(dt->year);
+	if(dt->day > daytab[leap][dt->month])
+		return false;
+	return true;
 }
