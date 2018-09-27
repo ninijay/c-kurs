@@ -1,0 +1,6 @@
+Bitte geben Sie die eine Liste von Worten ein.
+Einzelne wörter durch Return terminiert, Ende der Sequenz mit "ZZZ":
+a
+b
+c
+d
