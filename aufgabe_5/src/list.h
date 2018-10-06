@@ -4,18 +4,20 @@
  */
 #ifndef PERS_LIST
 #define PERS_LIST
-typedef struct l List;
+typedef struct LE List;
 typedef struct LE ListElement;
 
 struct LE {
-	Person		content;
+	Person		data;
 	ListElement *next;
 };
 
-struct l {
-	ListElement *head;
-	int cnt;
-}
 Person emptyPerson = {"", "continel", 0};
 List list;
+int listItems = 0;
+static int isListEmpty();
+static void addToList(Person p); 
+static void printList();
+static void removeFromList(Person p);
+static void clearList();
 #endif

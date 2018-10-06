@@ -2,7 +2,7 @@
 TARGET		:= bin/pers_mgmt
 
 # source
-SOURCES		:= src/main.c
+SOURCES		:= src/main.c src/list.c src/pers.c
 
 # tests
 TSTSOURCES	:= tests/test.c

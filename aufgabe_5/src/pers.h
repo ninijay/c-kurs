@@ -12,4 +12,6 @@ typedef struct {
 	unsigned int age;
 } Person;
 
+void printPerson(Person p);
+int prscmp(Person p1, Person p2);
 #endif
