@@ -17,10 +17,11 @@
 #include "CUnit/Basic.h"
 #include "test_utils.h"
 
-#include "../src/pers.h"
-#include "../src/list.h"
-#include "../src/pers.c"
-#include "../src/list.c"
+#include "person.h"
+#include "list.h"
+#include "person.c"
+#include "list.c"
+
 #ifndef TARGET // must be given by the make file --> see test target
 #error missing TARGET define
 #endif
@@ -36,7 +37,7 @@
 // setup & cleanup
 static int setup(void)
 {
-    initlist();
+    initList();
 	remove_file_if_exists(OUTFILE);
 	remove_file_if_exists(ERRFILE);
 	return 0; // success

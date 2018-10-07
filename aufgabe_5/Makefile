@@ -1,41 +1,41 @@
-# binaries
-TARGET		:= bin/pers_mgmt
+# what to produce
+TARGET        := bin/personlist
 
-# source
-SOURCES		:= src/main.c src/list.c src/pers.c
+# implementation files
+SOURCES       := src/main.c
 
-# tests
-TSTSOURCES	:= tests/test.c
+# test implementations
+TSTSOURCES    := tests/test.c
 
-# dirs
-CREATEDIRS	:= doc
+# directories to create (and remove upon cleanup)
+CREATEDIRS    := bin doc
 
 # list of derived file names from the source names
-OBJECTS		:= $(SOURCES:%.c=%.o)
-DEPS		:= $(SOURCES:%.c=%.d)
-TSTOBJECTS	:= $(TSTSOURCES:%.c=%.o)
-TSTDEPS		:= $(TSTSOURCES:%.c=%.d)
-TSTTARGET	:= $(CURDIR)/tests/runtest
+OBJECTS       := $(SOURCES:%.c=%.o)    # list of gcc -c  ... produced *.o files
+DEPS          := $(SOURCES:%.c=%.d)    # list of gcc -MD ... produced *.d files
+TSTOBJECTS    := $(TSTSOURCES:%.c=%.o) # list of gcc -c  ... produced *.o files
+TSTDEPS       := $(TSTSOURCES:%.c=%.d) # list of gcc -MD ... produced *.d files
+TSTTARGET     := $(CURDIR)/tests/runtest
 
-# libs
-CUNITINCDIR	:= $(CURDIR)/../CUnit/include
-CUNITLIBDIR	:= $(CURDIR)/../CUnit/lib
-TSTINCDIR	:= $(CURDIR)/../include
-TSTLIBDIR	:= $(CURDIR)/../lib
+# libraries
+CUNITINCDIR   := $(CURDIR)/../CUnit/include
+CUNITLIBDIR   := $(CURDIR)/../CUnit/lib
+TSTINCDIR     := $(CURDIR)/../include
+TSTLIBDIR     := $(CURDIR)/../lib
 
-# full path
-FULLTARGET	:= $(CURDIR)/$(TARGET)
+# full path to the target
+FULLTARGET    := $(CURDIR)/$(TARGET)
 
-# commands
-CC		= gcc
-CFLAGS		= -std=c99 -Wall -g
-LDFLAGS		= -static -z muldefs
+# commands and flags
+CC            = gcc
+CFLAGS        = -std=c99 -Wall -g
+CPPFLAGS      = -MD -Isrc -Itests -I$(TSTINCDIR) -I$(CUNITINCDIR) -DTARGET=$(FULLTARGET)
+LDFLAGS       = -static -z muldefs
 
-# always visit
+# targets which get always visited (without checking any up-to-date state)
 .PHONY: default clean test doc mkdir
 
-#targets
-
+# targets
 default: $(FULLTARGET)
 	@echo "#### $< built ####"
 
@@ -51,17 +51,18 @@ doc:
 	doxygen ../Doxyfile > /dev/null
 	@echo "#### $@ done ####"
 
-test:	$(TSTTARGET)
+test: $(TSTTARGET)
 	(cd tests; $(TSTTARGET))
 	@echo "#### $< executed ####"
 
 $(TSTTARGET): $(FULLTARGET) $(TSTOBJECTS)
-	 $(LINK.c) -o $(TSTTARGET) $(TSTOBJECTS) $(OBJECTS) -L$(CUNITLIBDIR) -lcuni    t -L$(TSTLIBDIR) -lprogctest
-	@echo "#### $@ built ####" 
+	$(LINK.c) -o $(TSTTARGET) $(TSTOBJECTS) $(OBJECTS) -L$(CUNITLIBDIR) -lcunit -L$(TSTLIBDIR) -lprogctest -lm
+	@echo "#### $@ built ####"
 
-# create dirs
+
+# create needed directories (ignoring any error)
 mkdir:
 	-mkdir -p $(CREATEDIRS)
 
-# read deps
+# read in the gcc -MD ... produced dependencies (ignoring any error)
 -include $(DEPS) $(TSTDEPS)
