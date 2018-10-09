@@ -51,7 +51,7 @@ static int teardown(void)
 
 static void test_clearList(){
     // setup
-    Person person = {"Meier","Robert",50};
+    Person person = {"Peter","Mustermann",50};
     // act
     clearList();
     // assert
@@ -60,7 +60,7 @@ static void test_clearList(){
 
 static void test_addToList(){
     // setup
-    Person person = {"Meier","Robert",50};
+    Person person = {"Peter","Mustermann",50};
     // act
     addToList(person);
     // assert
@@ -79,13 +79,13 @@ static void test_main(void)
     		"Insert\n",
     		"----------------------------------------------------\n",
     		"First Name:Name:Age:\n",
-    		"Add      Meier     Robert 30\n",
+    		"Add      Peter     Mustermann 30\n",
     		"----------------------------------------------------\n",
     		"Enter Input:\n",
     		"----------------------------------------------------\n",
                 "Show\n",
     		"----------------------------------------------------\n",
-                "1:      Meier     Robert	30\n",
+                "1:      Peter     Mustermann	30\n",
     		"----------------------------------------------------\n",
     		"Enter Input:\n",
     	};
