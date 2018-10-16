@@ -17,6 +17,24 @@ typedef struct {
 Date* getNextDay(Date *today);
 bool isDateValid(Date *dt);
 
+bool isNumber(char number[])
+{
+    int i = 0;
+
+    //checking for negative numbers
+    if (number[0] == '-')
+        i = 1;
+    for (; number[i] != 0; i++)
+    {
+        //if (number[i] > '9' || number[i] < '0')
+        if (!isdigit(number[i])){
+	    (void)printf("%s is not a valid number\n", number);
+            return false;
+	}
+    }
+    return true;
+}
+
 void printDate(Date *dt){
 	(void)printf("%d-%d-%d", dt->day, dt->month, dt->year);
 }
@@ -32,8 +50,14 @@ int main(int argc, char *argv[]){
 		(void)printf("Error during memmory allocation\n");
 		return EXIT_FAILURE;
 	}
+	if(!isNumber(argv[1]))
+		return EXIT_FAILURE;
 	today->day = strtol(argv[1], NULL, 10);
+	if(!isNumber(argv[2]))
+		return EXIT_FAILURE;
 	today->month = strtol(argv[2], NULL, 10);
+	if(!isNumber(argv[3]))
+		return EXIT_FAILURE;
 	today->year = strtol(argv[3], NULL, 10);
 	if(!isDateValid(today)){
 		(void)printf("Date is invalid!\n");
